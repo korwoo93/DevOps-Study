@@ -1,16 +1,38 @@
 1. 네트워크 방식 중 패킷 교환 방식에 대해 설명해주세요.
+
+-> 데이터를 작은 단위로 분할 후 송/수신지 및 정보가 담긴 정보를 붙여 전송하는 방식
+
 2. 프로토콜이란 무엇인지 설명해주세요.
+   -> 통신을 위한 양식및 규칙
+
 3. PDU(Protocol Data Unit)를 설명해주세요.
+   -> OSI 모델의 각 계층에서 데이터를 어떻게 패키징 할 것인지 설명하는 용어
+
+Application Layer : Message
+Presentation Layer : Data
+SEssion Layer : data
+Transport Layer : TCP: Segement, UDP: Datagram
+Network Layer : Packets
+Data Link Layer : Frames
+Physical Layer Bit
+
+
 4. LAN과 WAN에 대해 설명해주세요.
+   -> LAN(Local Area Network)
+   WAN(Wide Area Network)
+   즉 LAN은 지역단위의 네트워크이고 WAN은 LAN이 여러개 모인 좀 더 넓은 단위의 네트워크를 의미한다.
+
 5. 소켓이란 무엇인지 설명해주세요.
+   -> 데이터 스트림과 같은 개념
 6. L2 Switching 과정을 서술해주세요.
+   L2 Access switch
 7. Wire Shark로 ARP 패킷을 읽고 통신 과정을 서술해주세요.
 8. IPv4 패킷의 헤더 중 다음 필드의 설명과 문항을 답변해주세요.
-    ![IP Header](https://user-images.githubusercontent.com/14902866/277317420-e093c5ea-cc8a-4e7e-a7c9-3c6abd1fb005.png)
+   ![IP Header](https://user-images.githubusercontent.com/14902866/277317420-e093c5ea-cc8a-4e7e-a7c9-3c6abd1fb005.png)
     - Version
         - IPv4의 값은 얼마일까요?
     - IHL
-        - IPv4 헤더 기본 길이는 얼마일까요? 
+        - IPv4 헤더 기본 길이는 얼마일까요?
     - Packet Length
         - MTU가 포함된 패킷의 길이 값은 얼마일까요?
     - TTL
@@ -18,8 +40,14 @@
     - Protocol Number
         - TCP는 몇 번일까요?
 9. Broadcast와 Unicast의 차이점을 설명해주세요.
+   -> Unicast : 1:1 통신
+   Broadcast : 네트워크내의 모든 사용자에게 정보 전달
+
 10. 다음과 같은 서브넷 마스크에서 네트워크와 호스트 영역을 구분하여 서술해주세요.
     > 192.168.100.1/24
+
+    -> 192.168.100.1 ~ 192.168.100.255
+    192.168.100(네트워크 영역).1 ~ 255(호스트 영역)
 11. 각 IPv4 예약 주소 역할을 설명해주세요.
     - 0.0.0.0/8
     - 10.0.0.0/8
@@ -51,7 +79,14 @@
     ===========================================================================
     ```
 14. TCP와 UDP의 차이점은 무엇일까요? 그리고 각각 이를 기반으로 동작하는 대표 프로토콜 하나를 설명해주세요.
+ -> TCP : 연결 지향형으로 패킷 교환, 3Way Hand Shaking 을 통해 연결을 설정 후 4Way Hand Shaking을 통해 해제
+          UDP보다 속도가 느리지만 보다 높은 신뢰성(목적지와 수신지를 확실히 하여 정확한 전송을 보장)
+ -> UDP : 비 연결형 서비스로 데이터그램 방식 제공, TCP 보다 빠르나 신뢰성이 보다 낮음, 3Way Hand Shaking 과 같은 정보를 보내거나 받는다는 신호절차를 거치지 않는다.
 15. TCP 3way Handshaking 과정을 서술해주세요.
+ -> 클라이언트는 시퀀스 번호를 생성하고 서버로 전송
+ -> 서버는 해당 값에 특정 숫자를 더한 값 ACK와 시퀀스 번호를 클라이언트로 전송
+ -> 클라이언트는 해당 값을 받으면 연결이 완료되었다고 판단하고 다시 서버에 이전과 같은 방식으로 서버에 전송
+ -> 서버또한 연결 완료로 판단하고 데이터 전송 시작한다.
 16. HTTP/1.0, HTTP/1.1, HTTP/2, HTTP/3의 특징을 각각 설명해주세요.
 17. HTTP Header 중 다음과 같은 헤더를 설명해주세요.
     - Request Header 中
@@ -66,4 +101,12 @@
     - X-Forwarded-For
 18. 쿠키와 세션의 차이점을 설명해주세요.
 19. URL과 URI의 차이점을 설명해주세요.
+-> URL(Uniform Resource Locator) : Resource의 정확한 위치 정보를 나타낸다.
+-> URI(Uniform Resource Identifier) : 자원에 대한 고유 식별자로써 URL을 포함하는 의미
 20. 브라우저의 주소창에 naver.com을 쳤을 때 어떤 과정을 통해 접속하는지 서술해주세요.
+-> DNS에 도메인 검색요청
+-> DNS는 naver.com에 대응하는 IP주소를 응답
+-> 받은 IP주소를 사용하여 TCP통신을 통해 IP서버에 요청을 보낸다.
+-> 서버는 요청내용에 대한 응답메시지를 만들어 TCP 통신을 통해 클라이언트로 전송
+-> 브라우저는 응답메시지를 HTTP 프로토콜을 사용하여 유저에게 표시
+    ![IP Header](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FL9l7n%2Fbtq5x9dYnIc%2FRDaGCkAQhMKN3RQqE8gm01%2Fimg.png)
