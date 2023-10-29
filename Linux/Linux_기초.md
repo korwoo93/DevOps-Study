@@ -1,20 +1,75 @@
 # Linux 기초
 1. AWS Free-tier 계정으로 EC2 Amazon Linux2 인스턴스(t2a.micro)를 생성하고 ssh로 접속해보세요.
+   ```bash
+   The authenticity of host 'ec2-3-37-88-120.ap-northeast-2.compute.amazonaws.com (3.37.88.120)' can't be established.
+   ED25519 key fingerprint is SHA256:2ocO3eflRnP1uZELq3qaPvib+rzvf100R/JvpnjNEbQ.
+   This key is not known by any other names
+   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+   Warning: Permanently added 'ec2-3-37-88-120.ap-northeast-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+   ~~  \_#####\
+   ~~     \###|
+   ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+    ```
     - 위 sshd 접속 과정을 설명해주세요.
-    - 퍼블릭 키는 어디에 있나요?
+    - 퍼블릭 키는 어디에 있나요? : 클라이언트가 소유
     - 리눅스 내부에서 접속 포트 번호를 22에서 2022로 변경하려면 어떻게 할까요?
+    sudo vim /etc/ssh/sshd_config
+# If you want to change the port on a SELinux system, you have to tell
+# SELinux about this change.
+# semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
+#
+# Port 22 
+-> 21번째줄 Port 22의 주석을 제거 후 2022로 변경한다.
+-> sudo systemctl restart sshd 사용하여 sshd 재시작
+korwoo@DESKTOP-VB8PEDI:~$ ssh -i "ssibal.pem" ec2-user@ec2-3-37-88-120.ap-northeast-2.compute.amazonaws.com -p 2022
+,     #_
+~\_  ####_        Amazon Linux 2023
+~~  \_#####\
+~~     \###|
+~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
 2. 현재 사용 중인 리눅스의 파일 시스템을 조회하는 명령어를 입력하고 결과를 작성해주세요.
+    ```
+   [ec2-user@ip-172-31-32-62 ~]$ df -T
+   Filesystem     Type     1K-blocks    Used Available Use% Mounted on
+   devtmpfs       devtmpfs      4096       0      4096   0% /dev
+   tmpfs          tmpfs       486100       0    486100   0% /dev/shm
+   tmpfs          tmpfs       194440    2896    191544   2% /run
+   /dev/xvda1     xfs        8310764 1550768   6759996  19% /
+   tmpfs          tmpfs       486100       0    486100   0% /tmp
+   /dev/xvda128   vfat         10202    1306      8896  13% /boot/efi
+   tmpfs          tmpfs        97220       0     97220   0% /run/user/1000
+   ```
 3. 최상위 루트 디렉토리('/')의 하위 디렉토리를 간략하게 설명해주세요.
-    - /bin
-    - /dev
-    - /etc
-    - /lib
-    - /mnt
-    - /proc
-    - /usr
-    - /var
+    - /bin : ls, cp, mv 와 같은 기본 명령어들의 바이너리 파일이 위치
+    - /dev : 물리적 하드웨어를 다루기 위한 파일
+    - /etc : 시스템 전반의 설정 파일 저장 (Ex 네트워크 설정 daemon 설정 등)
+    - /lib : 시스템 라이브러리(실행파일을 동작시키기 위해 필요한 코드 모음) 저장
+    - /mnt : 외부 장치를 마운트 할떄 사용되는 디렉터리
+    - /proc : 동작중인 프로세스 정보와 커널 정보가 업데이트되며 보관되는 가상 파일시스템
+    - /usr : 사용자 관련 프로그램과 데이터 보관
+    - /var : 변경 가능한 데이터를 저장하는곳(로그파일, 메일 큐 등)
 4. 현재 사용 중인 쉘과 사용 가능한 쉘의 목록을 확인하는 명령어를 각각 입력해주세요.
-    - 쉘이란 무엇일까요?
+    ```
+    [ec2-user@ip-172-31-32-62 ~]$ echo $SHELL
+    /bin/bash
+    [ec2-user@ip-172-31-32-62 ~]$ cat /etc/shells
+    /bin/sh
+    /bin/bash
+    /usr/bin/sh
+    /usr/bin/bash
+    /bin/csh
+    /bin/tcsh
+    /usr/bin/csh
+    /usr/bin/tcsh
+    ```
+    - 쉘이란 무엇일까요? : 사용자와 운영 체제 사이의 인터페이스 역할을 담당하는 소프트웨어
 5. ls 명령어를 입력하면 현재 디렉토리 내 파일과 디렉토리의 목록을 반환합니다. 해당 명령어의 입력부터 출력까지의 과정을 설명해주세요.
     > 작성 키워드 : **fork & exec(system call)**
     - system call이란 무엇일까요?
